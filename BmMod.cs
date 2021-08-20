@@ -24,10 +24,11 @@ namespace BmMod
         //自瞄按键
         public static bool AimBotState = false;
         public static int AimBotKeyNum = 0;
-        public static int AimBotKeyConfig = 1;
+        //public static int AimBotKeyConfig = 1;
         public static int AimBotKeyOrig = 0;
         public static readonly string[] AimBotKeyStr = { "[关]", "<color=lime>[F键]</color>", "<color=lime>[右键]</color>", "<color=lime>[左键]</color>", "<color=lime>[CTRL]</color>", "<color=lime>[ALT]</color>" };
         readonly KeyCode[] AimBotKeyCode = { KeyCode.None, KeyCode.F, KeyCode.Mouse1, KeyCode.Mouse0, KeyCode.LeftControl, KeyCode.LeftAlt };
+        public static bool[] AimBotKeyConfig = { true, true, true, true, true, true };
         //射速 + 子弹飞行速度 开关
         public static bool WeaponSpeedState = false;
         public static bool WeaponSpeedWindowState = false;
@@ -156,16 +157,16 @@ namespace BmMod
             //自瞄 切换
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                AimBotState = !AimBotState;
-                if (AimBotState)
+                NextAimBotKey();
+                if(AimBotKeyNum != 0 && AimBotState == false)
                 {
+                    AimBotState = true;
                     Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height + 45);
-                    AimBotKeyNum = AimBotKeyOrig == 0 ? AimBotKeyConfig : AimBotKeyOrig;
                 }
-                else
+                if (AimBotKeyNum == 0)
                 {
+                    AimBotState = false;
                     Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height - 45);
-                    AimBotKeyNum = 0;
                 }
             }
             //切换起飞模式
@@ -336,6 +337,7 @@ namespace BmMod
             {
                 CurWeaponObj.WeaponAttr.AttDis = 9999f;
                 CurWeaponObj.WeaponAttr.AttDistance = 9999f;
+                CurWeaponObj.WeaponAttr.Radius = 9999f;
             }
             //恢复重力
             if (HeroMoveManager.HMMJS.movement.gravity == 0)
@@ -499,6 +501,23 @@ namespace BmMod
             {
                 //Destroy(Shield);  //有BUG
                 Shield.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            }
+        }
+        //自瞄按钮
+        public static void NextAimBotKey()
+        {
+            while (true)
+            {
+                AimBotKeyNum++;
+                if (AimBotKeyNum >= AimBotKeyConfig.Length)
+                {
+                    AimBotKeyNum = 0;
+                    break;
+                }
+                if (AimBotKeyConfig[AimBotKeyNum])
+                {
+                    break;
+                }
             }
         }
         //自瞄

@@ -20,7 +20,7 @@ namespace BmMod
         public static ConfigEntry<float> AimBotSightRange = Config.Bind("config", "AimBotSightRange", BmMod.AimBotSightRange);
         public static ConfigEntry<bool> AimBotModelMagneticState = Config.Bind("config", "AimBotModelMagneticState", BmMod.AimBotModelMagneticState);
         public static ConfigEntry<bool> AimBotModelForceState = Config.Bind("config", "AimBotModelForceState", BmMod.AimBotModelForceState);
-        public static ConfigEntry<int> AimBotKeyConfig = Config.Bind("config", "AimBotKeyConfig", BmMod.AimBotKeyConfig);
+        public static ConfigEntry<string> AimBotKeyConfig = Config.Bind("config", "AimBotKeyConfig", BoolArray2String(BmMod.AimBotKeyConfig));
         public static ConfigEntry<float> BulletSpeedNum = Config.Bind("config", "BulletSpeedNum", BmMod.BulletSpeedNum);
         public static ConfigEntry<int> AttSpeedNum = Config.Bind("config", "AttSpeedNum", BmMod.AttSpeedNum);
         public static ConfigEntry<float> AimBotForceDistance = Config.Bind("config", "AimBotForceDistance", BmMod.AimBotForceDistance);
@@ -33,7 +33,7 @@ namespace BmMod
             BmMod.AimBotSightRange = AimBotSightRange.Value;
             BmMod.AimBotModelMagneticState = AimBotModelMagneticState.Value;
             BmMod.AimBotModelForceState = AimBotModelForceState.Value;
-            BmMod.AimBotKeyConfig = AimBotKeyConfig.Value;
+            BmMod.AimBotKeyConfig = String2BoolArray(AimBotKeyConfig.Value);
             BmMod.BulletSpeedNum = BulletSpeedNum.Value;
             BmMod.AttSpeedNum = AttSpeedNum.Value;
             BmMod.AimBotForceDistance = AimBotForceDistance.Value;
@@ -49,12 +49,31 @@ namespace BmMod
             AimBotSightRange.Value = BmMod.AimBotSightRange;
             AimBotModelMagneticState.Value = BmMod.AimBotModelMagneticState;
             AimBotModelForceState.Value = BmMod.AimBotModelForceState;
-            AimBotKeyConfig.Value = BmMod.AimBotKeyConfig;
+            AimBotKeyConfig.Value = BoolArray2String(BmMod.AimBotKeyConfig);
             BulletSpeedNum.Value = BmMod.BulletSpeedNum;
             AttSpeedNum.Value = BmMod.AttSpeedNum;
             AimBotForceDistance.Value = BmMod.AimBotForceDistance;
             AimBotShieldState.Value = BmMod.AimBotShieldState;
             Config.Save();
+        }
+
+        public static string BoolArray2String(bool[] arg)
+        {
+            return string.Join(",", arg);
+        }
+
+        public static bool[] String2BoolArray(string arg)
+        {
+            string[] Str = arg.Split(',');
+            bool[] Res = new bool[Str.Length];
+            for (int i = 0; i < Str.Length; i++)
+            {
+                if (Str[i] == "True")
+                    Res[i] = true;
+                else
+                    Res[i] = false;
+            }
+            return Res;
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using HeroCameraName;
 using System;
+using System.Linq;
 using UnhollowerBaseLib;
 using UnityEngine;
 
@@ -22,13 +23,13 @@ namespace BmMod
             AmmoState = GUILayout.Toggle(AmmoState, AmmoState ? "[F1] 无限子弹 <color=lime>[开]</color>" : "[F1] 无限子弹 [关]", null);
 
             GUILayout.BeginHorizontal(null);
-            if (GUILayout.Toggle(AimBotState, "[F2] 自瞄" + AimBotKeyStr[AimBotKeyNum], null) != BmMod.AimBotState)
+            if (GUILayout.Toggle(AimBotState, "[F2] 自瞄" + AimBotKeyStr[AimBotKeyNum], null) != AimBotState)
             {
                 AimBotState = !AimBotState;
                 if (AimBotState)
                 {
                     MenuRect = new Rect(MenuRect.x, MenuRect.y, MenuRect.width, MenuRect.height + 45);
-                    AimBotKeyNum = AimBotKeyOrig == 0 ? AimBotKeyConfig : AimBotKeyOrig;
+                    NextAimBotKey();
                 }
                 else
                 {
@@ -41,14 +42,17 @@ namespace BmMod
             if (AimBotState)
             {
                 GUILayout.BeginHorizontal(null);
-                for (int i = 1; i < AimBotKeyStr.Length; i++)
+                for (int i = 1, j = 0; i < AimBotKeyConfig.Length; i++)
                 {
-                    if (GUILayout.Toggle(AimBotKeyNum == i, AimBotKeyStr[i], null))
+                    if (AimBotKeyConfig[i])
                     {
-                        AimBotKeyNum = i;
-                        AimBotKeyOrig = i;
+                        j++;
+                        if(GUILayout.Toggle(AimBotKeyNum == i, AimBotKeyStr[i], null))
+                        {
+                            AimBotKeyNum = i;
+                        }
                     }
-                    if (i % 3 == 0)
+                    if (j % 3 == 0)
                     {
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal(null);
@@ -148,7 +152,7 @@ namespace BmMod
             GUI.DragWindow(new Rect(0, 0, 10000, 420));
         }
 
-        //地图提示窗口
+        // 提示窗口
         public static void TipsWindow(int windowID)
         {
             Il2CppReferenceArray<GUILayoutOption> options = null;
@@ -196,17 +200,19 @@ namespace BmMod
             GUI.DragWindow(new Rect(0, 0, 10000, 400));
         }
 
-        //自瞄设置
+        // 自瞄设置
         public static void AimBotWindow(int windowID)
         {
             GUILayout.Space(5);
-            GUILayout.Label("自瞄默认按钮", null);
+            GUILayout.Label("自瞄按键筛选", null);
             GUILayout.BeginHorizontal(null);
             for (int i = 1; i < AimBotKeyStr.Length; i++)
             {
-                if (GUILayout.Toggle(AimBotKeyConfig == i, AimBotKeyStr[i], null))
+                AimBotKeyConfig[i] = GUILayout.Toggle(AimBotKeyConfig[i], AimBotKeyStr[i], null);
+                //至少保留一个按钮
+                if(AimBotKeyConfig.Where(x => x == true).Count() == 1)
                 {
-                    AimBotKeyConfig = i;
+                    AimBotKeyConfig[i] = true;
                 }
                 if (i % 3 == 0)
                 {
@@ -248,7 +254,7 @@ namespace BmMod
             GUI.DragWindow(new Rect(0, 0, 10000, 250));
         }
 
-        //实验室窗口
+        // 实验室窗口
         public static void TestWindow(int windowID)
         {
             GUILayout.Space(10);
