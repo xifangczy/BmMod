@@ -24,8 +24,6 @@ namespace BmMod
         //自瞄按键
         public static bool AimBotState = false;
         public static int AimBotKeyNum = 0;
-        //public static int AimBotKeyConfig = 1;
-        public static int AimBotKeyOrig = 0;
         public static readonly string[] AimBotKeyStr = { "[关]", "<color=lime>[F键]</color>", "<color=lime>[右键]</color>", "<color=lime>[左键]</color>", "<color=lime>[CTRL]</color>", "<color=lime>[ALT]</color>" };
         readonly KeyCode[] AimBotKeyCode = { KeyCode.None, KeyCode.F, KeyCode.Mouse1, KeyCode.Mouse0, KeyCode.LeftControl, KeyCode.LeftAlt };
         public static bool[] AimBotKeyConfig = { true, true, true, true, true, true };
@@ -245,6 +243,7 @@ namespace BmMod
                  * NWARRIOR_NPC_GOLDENCUP 金爵
                  * NWARRIOR_DROP_TRIGGER 包子
                  * keyValuePair.Value.DropOPCom.FlyMeToTheMoon(HeroCameraManager.HeroID); 有BUG
+                 * 东西过多 使用 修改AutoPickRange属性 会造成卡顿
                  */
                 foreach (var keyValuePair in NewPlayerManager.PlayerDict)
                 {
