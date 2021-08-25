@@ -18,8 +18,8 @@ namespace BmMod
         public static new ConfigFile Config = new ConfigFile(Path.Combine(Paths.ConfigPath, "BmMod.cfg"), true);
         public static ConfigEntry<int> SuperRunSet = Config.Bind("config", "SuperRunSet", BmMod.SuperRunSet);
         public static ConfigEntry<float> AimBotSightRange = Config.Bind("config", "AimBotSightRange", BmMod.AimBotSightRange);
-        public static ConfigEntry<bool> AimBotModelMagneticState = Config.Bind("config", "AimBotModelMagneticState", BmMod.AimBotModelMagneticState);
-        public static ConfigEntry<bool> AimBotModelForceState = Config.Bind("config", "AimBotModelForceState", BmMod.AimBotModelForceState);
+        public static ConfigEntry<bool> AimBotMagneticState = Config.Bind("config", "AimBotMagneticState", BmMod.AimBotMagneticState);
+        public static ConfigEntry<bool> AimBotForceState = Config.Bind("config", "AimBotForceState", BmMod.AimBotForceState);
         public static ConfigEntry<string> AimBotKeyConfig = Config.Bind("config", "AimBotKeyConfig", BoolArray2String(BmMod.AimBotKeyConfig));
         public static ConfigEntry<float> BulletSpeedNum = Config.Bind("config", "BulletSpeedNum", BmMod.BulletSpeedNum);
         public static ConfigEntry<int> AttSpeedNum = Config.Bind("config", "AttSpeedNum", BmMod.AttSpeedNum);
@@ -31,8 +31,8 @@ namespace BmMod
             //配置内容传递给BmMod
             BmMod.SuperRunSet = SuperRunSet.Value;
             BmMod.AimBotSightRange = AimBotSightRange.Value;
-            BmMod.AimBotModelMagneticState = AimBotModelMagneticState.Value;
-            BmMod.AimBotModelForceState = AimBotModelForceState.Value;
+            BmMod.AimBotMagneticState = AimBotMagneticState.Value;
+            BmMod.AimBotForceState = AimBotForceState.Value;
             BmMod.AimBotKeyConfig = String2BoolArray(AimBotKeyConfig.Value);
             BmMod.BulletSpeedNum = BulletSpeedNum.Value;
             BmMod.AttSpeedNum = AttSpeedNum.Value;
@@ -47,8 +47,8 @@ namespace BmMod
         {
             SuperRunSet.Value = BmMod.SuperRunSet;
             AimBotSightRange.Value = BmMod.AimBotSightRange;
-            AimBotModelMagneticState.Value = BmMod.AimBotModelMagneticState;
-            AimBotModelForceState.Value = BmMod.AimBotModelForceState;
+            AimBotMagneticState.Value = BmMod.AimBotMagneticState;
+            AimBotForceState.Value = BmMod.AimBotForceState;
             AimBotKeyConfig.Value = BoolArray2String(BmMod.AimBotKeyConfig);
             BulletSpeedNum.Value = BmMod.BulletSpeedNum;
             AttSpeedNum.Value = BmMod.AttSpeedNum;
@@ -153,4 +153,14 @@ namespace BmMod
     {
         static bool Prefix() { return false; }
     }
+
+    //测试
+    //[HarmonyPatch(typeof(NewPlayerObject), "xxx")]
+    //class test
+    //{
+    //    static bool Prefix()
+    //    {
+    //        return true;
+    //    }
+    //}
 }

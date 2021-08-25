@@ -29,9 +29,10 @@ namespace BmMod
         public static bool[] AimBotKeyConfig = { true, true, true, true, true, true };
         //射速 + 子弹飞行速度 开关
         public static bool WeaponSpeedState = false;
-        public static bool WeaponSpeedWindowState = false;
-        public static float BulletSpeedNum = 500; //飞行速度
+        public static float BulletSpeedNum = 1000; //弹速
         public static int AttSpeedNum = 500;   //射速
+        public static bool BulletSpeedState = true;
+        public static bool AttSpeedState = false;   //默认关闭射速 大部分武器 射速无法调整
         //提高精准度
         public static bool AccuracyState = false;
         //攻击距离
@@ -39,9 +40,8 @@ namespace BmMod
         //起飞
         public static bool SuperJumpState = false;
         public static readonly string[] SuperJumpStr = { "[关]", "<color=lime>[超级跳]</color>", "<color=lime>[零重力]</color>" };
-        public static int SuperJumpNum = 0;
-        public static int SuperJumpOrig = 0;
-        float OrigGravity = 11.65f;
+        public static int SuperJumpType = 0;
+        readonly float OrigGravity = 11.65f;
         //超级速度
         public static bool SuperRunState = false;
         public static int SuperRunOrig = 600;
@@ -67,8 +67,8 @@ namespace BmMod
         //自瞄设置
         public static bool AimBotWindowState = false;
         public static float AimBotSightRange = 0.1f;    //默认自瞄范围
-        public static bool AimBotModelMagneticState = true; //磁力自瞄 默认
-        public static bool AimBotModelForceState = false;   //暴力自瞄
+        public static bool AimBotMagneticState = true; //磁力自瞄 默认
+        public static bool AimBotForceState = false;   //暴力自瞄
         public static bool AimBotPlusState = false; //转起来
         public static float AimBotForceDistance = 5; // 优先瞄准离自己距离多少以内的敌人
         public static bool AimBotShieldState = false; // 干掉盾牌
@@ -170,16 +170,17 @@ namespace BmMod
             //切换起飞模式
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                SuperJumpState = !SuperJumpState;
-                if (SuperJumpState)
+                SuperJumpType++;
+                SuperJumpState = true;
+                if (SuperJumpType == 1)
                 {
-                    Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height + 20);
-                    SuperJumpNum = SuperJumpOrig == 0 ? 1 : SuperJumpOrig;
+                    Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height + 20);    
                 }
-                else
+                else if(SuperJumpType == 3)
                 {
+                    SuperJumpType = 0;
+                    SuperJumpState = false;
                     Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height - 20);
-                    SuperJumpNum = 0;
                 }
             }
             //超级移速
@@ -193,7 +194,18 @@ namespace BmMod
             //超远变态武器
             if (Input.GetKeyDown(KeyCode.F8)) { AttDistanceState = !AttDistanceState; }
             //射速 + 子弹飞行速度
-            if (Input.GetKeyDown(KeyCode.F9)) { WeaponSpeedState = !WeaponSpeedState; }
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                WeaponSpeedState = !WeaponSpeedState;
+                if (WeaponSpeedState)
+                {
+                    Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height + 110);
+                }
+                else
+                {
+                    Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height - 110);
+                }
+            }
             //if (Input.GetKeyDown(KeyCode.G))
             //{
             //    GM.GMManager.instance.OpenGMPanel();
@@ -206,7 +218,7 @@ namespace BmMod
             WeaponPerformanceObj CurWeaponObj = HeroCameraManager.HeroObj.BulletPreFormCom.ReturnWeapon(CurWeaponID);
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
-                //MainMod.Log.LogWarning(HeroMoveManager.HMMJS.movement.gravity);
+                //MainMod.Log.LogWarning();
             }
 
             //隐藏显示鼠标
@@ -234,25 +246,24 @@ namespace BmMod
             if (Input.GetKeyDown(KeyCode.Mouse2))
             {
                 /*
-                 * Shape 5504 魂
-                 * (ServerDefine.FightType)16777225 魂
+                 * (ServerDefine.FightType)16777225 && Shape 5504 魂
                  * NWARRIOR_DROP_CASH 钱
                  * NWARRIOR_DROP_BULLET 子弹 次技能
                  * NWARRIOR_DROP_EQUIP 武器
                  * NWARRIOR_DROP_RELIC 卷轴
                  * NWARRIOR_NPC_GOLDENCUP 金爵
-                 * NWARRIOR_DROP_TRIGGER 包子
+                 * NWARRIOR_DROP_TRIGGER && Shape 5513 包子
                  * keyValuePair.Value.DropOPCom.FlyMeToTheMoon(HeroCameraManager.HeroID); 有BUG
                  * 东西过多 使用 修改AutoPickRange属性 会造成卡顿
                  */
                 foreach (var keyValuePair in NewPlayerManager.PlayerDict)
                 {
-                    if (keyValuePair.Value.FightType == ServerDefine.FightType.NWARRIOR_DROP_BULLET || keyValuePair.Value.FightType == ServerDefine.FightType.NWARRIOR_DROP_TRIGGER)
+                    if (keyValuePair.Value.FightType == ServerDefine.FightType.NWARRIOR_DROP_BULLET || keyValuePair.Value.Shape == 5513)
                     {
                         keyValuePair.Value.DropOPCom.AutoPickRange = 99999f;
                         continue;
                     }
-                    if (keyValuePair.Value.FightType == (ServerDefine.FightType)16777225 || keyValuePair.Value.FightType == ServerDefine.FightType.NWARRIOR_DROP_CASH)
+                    if (keyValuePair.Value.Shape == 5504 || keyValuePair.Value.FightType == ServerDefine.FightType.NWARRIOR_DROP_CASH)
                     {
                         Vector3 HeroPosition = HeroCameraManager.HeroTran.position;
                         keyValuePair.Value.gameTrans.position = new Vector3(HeroPosition.x, HeroPosition.y, HeroPosition.z);
@@ -317,9 +328,14 @@ namespace BmMod
             //射速 弹速设置
             if (WeaponSpeedState)
             {
-                CurWeaponObj.WeaponAttr.BulletSpeed = BulletSpeedNum;
-                CurWeaponObj.WeaponAttr.AttSpeed = SetList(AttSpeedNum, 0, 0, 10000);
-
+                if (AttSpeedState)
+                {
+                    CurWeaponObj.WeaponAttr.AttSpeed = SetList(AttSpeedNum, 0, 0, 10000);
+                }
+                if (BulletSpeedState)
+                {
+                    CurWeaponObj.WeaponAttr.BulletSpeed = BulletSpeedNum;
+                }
             }
             //无限子弹
             if (AmmoState)
@@ -341,15 +357,15 @@ namespace BmMod
             //恢复重力
             if (HeroMoveManager.HMMJS.movement.gravity == 0)
             {
-                if (SuperJumpNum != 2)
+                if (SuperJumpType != 2)
                 {
                     HeroMoveManager.HMMJS.movement.gravity = OrigGravity;
                 }
             }
             //起飞
-            if (SuperJumpNum == 1 && Input.GetKey(KeyCode.Space) && !HeroMoveManager.HMMJS.inputJump) { HeroCameraManager.HeroTran.Translate(Vector3.up * 0.3f); }
+            if (SuperJumpType == 1 && Input.GetKey(KeyCode.Space) && !HeroMoveManager.HMMJS.inputJump) { HeroCameraManager.HeroTran.Translate(Vector3.up * 0.3f); }
             //零重力
-            if (SuperJumpNum == 2)
+            if (SuperJumpType == 2)
             {
                 HeroMoveManager.HMMJS.movement.gravity = 0;
                 if (Input.GetKey(KeyCode.Space))
@@ -580,7 +596,7 @@ namespace BmMod
             }
             if (ResTran != null)
             {
-                if (AimBotModelMagneticState)
+                if (AimBotMagneticState)
                 {
                     //磁吸 代码修改自 https://github.com/shalzuth/AutoGunfireReborn/blob/e4a24e3e08fb6197418acf74084206122714782b/GunfireRebornMods/Mods/Aimbot.cs#L56
                     Vector3 position = ResTran.position + new Vector3(0, 0.2f);
