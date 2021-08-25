@@ -23,7 +23,7 @@ namespace BmMod
             AmmoState = GUILayout.Toggle(AmmoState, AmmoState ? "[F1] 无限子弹 <color=lime>[开]</color>" : "[F1] 无限子弹 [关]", null);
 
             GUILayout.BeginHorizontal(null);
-            if (GUILayout.Toggle(AimBotState, "[F2] 自瞄" + AimBotKeyStr[AimBotKeyNum], null) != AimBotState)
+            if (GUILayout.Toggle(AimBotState, "[F2] 自瞄 " + AimBotKeyStr[AimBotKeyNum], null) != AimBotState)
             {
                 AimBotState = !AimBotState;
                 if (AimBotState)
@@ -61,18 +61,18 @@ namespace BmMod
                 GUILayout.EndHorizontal();
             }
 
-            if (GUILayout.Toggle(SuperJumpState, "[F3] 起飞 " + SuperJumpStr[SuperJumpNum], null) != SuperJumpState)
+            if (GUILayout.Toggle(SuperJumpState, "[F3] 起飞 " + SuperJumpStr[SuperJumpType], null) != SuperJumpState)
             {
                 SuperJumpState = !SuperJumpState;
                 if (SuperJumpState)
                 {
                     MenuRect = new Rect(MenuRect.x, MenuRect.y, MenuRect.width, MenuRect.height + 20);
-                    SuperJumpNum = SuperJumpOrig == 0 ? 1 : SuperJumpOrig;
+                    SuperJumpType = 1;
                 }
                 else
                 {
                     MenuRect = new Rect(MenuRect.x, MenuRect.y, MenuRect.width, MenuRect.height - 20);
-                    SuperJumpNum = 0;
+                    SuperJumpType = 0;
                 }
             }
             GUILayout.BeginHorizontal(null);
@@ -80,10 +80,9 @@ namespace BmMod
             {
                 for (int i = 1; i < SuperJumpStr.Length; i++)
                 {
-                    if (GUILayout.Toggle(SuperJumpNum == i, SuperJumpStr[i], null))
+                    if (GUILayout.Toggle(SuperJumpType == i, SuperJumpStr[i], null))
                     {
-                        SuperJumpNum = i;
-                        SuperJumpOrig = i;
+                        SuperJumpType = i;
                     }
                 }
             }
@@ -119,11 +118,10 @@ namespace BmMod
             AccuracyState = GUILayout.Toggle(AccuracyState, AccuracyState ? "[F7] 提高精度 <color=lime>[开]</color>" : "[F7] 提高精度 [关]", null);
             AttDistanceState = GUILayout.Toggle(AttDistanceState, AttDistanceState ? "[F8] 超远攻击 <color=lime>[开]</color>" : "[F8] 超远攻击 [关]", null);
             GUILayout.BeginHorizontal(null);
-            WeaponSpeedState = GUILayout.Toggle(WeaponSpeedState, WeaponSpeedState ? "[F9] 提高射速 <color=lime>[开]</color>" : "[F9] 提高射速 [关]", null);
-            if (GUILayout.Button("设置", null))
+            if(GUILayout.Toggle(WeaponSpeedState, WeaponSpeedState ? "[F9] 提高射速 <color=lime>[开]</color>" : "[F9] 提高射速 [关]", null) != WeaponSpeedState)
             {
-                WeaponSpeedWindowState = !WeaponSpeedWindowState;
-                if (WeaponSpeedWindowState)
+                WeaponSpeedState = !WeaponSpeedState;
+                if (WeaponSpeedState)
                 {
                     MenuRect = new Rect(MenuRect.x, MenuRect.y, MenuRect.width, MenuRect.height + 110);
                 }
@@ -133,11 +131,12 @@ namespace BmMod
                 }
             }
             GUILayout.EndHorizontal();
-            if (WeaponSpeedWindowState)
+
+            if (WeaponSpeedState)
             {
-                GUILayout.Label("射速 " + AttSpeedNum, null);
+                AttSpeedState = GUILayout.Toggle(AttSpeedState, "开关 射速:" + AttSpeedNum, null);
                 AttSpeedNum = (int)GUILayout.HorizontalSlider(AttSpeedNum, 100f, 5000f, null);
-                GUILayout.Label("子弹飞行速度 " + BulletSpeedNum, null);
+                BulletSpeedState = GUILayout.Toggle(BulletSpeedState, "开关 弹速:" + BulletSpeedNum, null);
                 BulletSpeedNum = GUILayout.HorizontalSlider(BulletSpeedNum, 100f, 5000f, null);
                 if (GUILayout.Button("保存参数", null)) { MainMod.SaveConfig(); }
             }
@@ -223,15 +222,15 @@ namespace BmMod
             GUILayout.EndHorizontal();
 
             GUILayout.Space(5);
-            if (GUILayout.Toggle(AimBotModelMagneticState, "磁吸自瞄(微自瞄)", null))
+            if (GUILayout.Toggle(AimBotMagneticState, "磁吸自瞄(微自瞄)", null))
             {
-                AimBotModelMagneticState = true;
-                AimBotModelForceState = false;
+                AimBotMagneticState = true;
+                AimBotForceState = false;
             }
-            if (GUILayout.Toggle(AimBotModelForceState, "暴力自瞄", null))
+            if (GUILayout.Toggle(AimBotForceState, "暴力自瞄", null))
             {
-                AimBotModelForceState = true;
-                AimBotModelMagneticState = false;
+                AimBotForceState = true;
+                AimBotMagneticState = false;
             }
             GUILayout.Space(5);
             GUILayout.Label("自瞄范围 " + AimBotSightRange, null);

@@ -7,4 +7,4 @@ https://builds.bepis.io/projects/bepinex_be
 下载本项目DLL文件到 BepInEx\plugins 目录内  
 
 本项目实验性质，为了学习Unity 和 C#  
-因为辅助造成的问题，概不负责。
+因辅助造成的问题，概不负责。
