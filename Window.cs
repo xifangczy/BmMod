@@ -10,7 +10,7 @@ namespace BmMod
     {
         public Window(IntPtr intPtr) : base(intPtr) { }
 
-        public static Rect MenuRect = new Rect(Screen.width - 250, 150, 200, 340); // 主菜单
+        public static Rect MenuRect = new Rect(Screen.width - 250, 150, 200, 360); // 主菜单
         public static Rect TipsRect = new Rect(Screen.width - 250, 550, 200, 350);    // 提示窗口
         public static Rect AimBotRect = new Rect(Screen.width - 460, 40, 200, 340);   // 自瞄设置
         public static Rect TestRect = new Rect(Screen.width - 460, 400, 200, 220);    // 实验室窗口
@@ -116,7 +116,7 @@ namespace BmMod
             NoRecoilState = GUILayout.Toggle(NoRecoilState, NoRecoilState ? "[F5] 无后坐力 <color=lime>[开]</color>" : "[F5] 无后坐力 [关]", null);
             NoBulletConsumeState = GUILayout.Toggle(NoBulletConsumeState, NoBulletConsumeState ? "[F6] 不耗子弹 <color=lime>[开]</color>" : "[F6] 不耗子弹 [关]", null);
             AccuracyState = GUILayout.Toggle(AccuracyState, AccuracyState ? "[F7] 提高精度 <color=lime>[开]</color>" : "[F7] 提高精度 [关]", null);
-            AttDistanceState = GUILayout.Toggle(AttDistanceState, AttDistanceState ? "[F8] 超远攻击 <color=lime>[开]</color>" : "[F8] 超远攻击 [关]", null);
+            AttDistanceState = GUILayout.Toggle(AttDistanceState, AttDistanceState ? "[F8] 近战距离 <color=lime>[开]</color>" : "[F8] 近战距离 [关]", null);
             GUILayout.BeginHorizontal(null);
             if(GUILayout.Toggle(WeaponSpeedState, WeaponSpeedState ? "[F9] 提高射速 <color=lime>[开]</color>" : "[F9] 提高射速 [关]", null) != WeaponSpeedState)
             {
@@ -131,19 +131,19 @@ namespace BmMod
                 }
             }
             GUILayout.EndHorizontal();
-
             if (WeaponSpeedState)
             {
-                AttSpeedState = GUILayout.Toggle(AttSpeedState, "开关 射速:" + AttSpeedNum, null);
+                AttSpeedState = GUILayout.Toggle(AttSpeedState, "射速(部分武器可用):" + AttSpeedNum, null);
                 AttSpeedNum = (int)GUILayout.HorizontalSlider(AttSpeedNum, 100f, 5000f, null);
-                BulletSpeedState = GUILayout.Toggle(BulletSpeedState, "开关 弹速:" + BulletSpeedNum, null);
+                BulletSpeedState = GUILayout.Toggle(BulletSpeedState, "弹速:" + BulletSpeedNum, null);
                 BulletSpeedNum = GUILayout.HorizontalSlider(BulletSpeedNum, 100f, 5000f, null);
                 if (GUILayout.Button("保存参数", null)) { MainMod.SaveConfig(); }
             }
+            QuickReloadBulletState = GUILayout.Toggle(QuickReloadBulletState, QuickReloadBulletState ? "[F11] 快速换弹 <color=lime>[开]</color>" : "[F11] 快速换弹 [关]", null);
 
             GUILayout.Label("[中键] 我吸!", null);
             GUILayout.Label("[C/X] 地图信息", null);
-            GUILayout.Space(10);
+            GUILayout.Space(5);
             GUILayout.BeginHorizontal(null);
             if (GUILayout.Button("关闭窗口", null)) { MenuState = false; }
             if (GUILayout.Button("实验室", null)) { TestWindowState = !TestWindowState; }

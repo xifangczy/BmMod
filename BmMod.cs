@@ -33,6 +33,8 @@ namespace BmMod
         public static int AttSpeedNum = 500;   //射速
         public static bool BulletSpeedState = true;
         public static bool AttSpeedState = false;   //默认关闭射速 大部分武器 射速无法调整
+        //快速换弹
+        public static bool QuickReloadBulletState = false;
         //提高精准度
         public static bool AccuracyState = false;
         //攻击距离
@@ -138,6 +140,7 @@ namespace BmMod
                 }
             }
         }
+        public static SkillBolt.SkillCollectData final;
         void Update()
         {
             //菜单 开关
@@ -191,7 +194,7 @@ namespace BmMod
             if (Input.GetKeyDown(KeyCode.F6)) { NoBulletConsumeState = !NoBulletConsumeState; }
             //提高精准度
             if (Input.GetKeyDown(KeyCode.F7)) { AccuracyState = !AccuracyState; }
-            //超远变态武器
+            //近战距离
             if (Input.GetKeyDown(KeyCode.F8)) { AttDistanceState = !AttDistanceState; }
             //射速 + 子弹飞行速度
             if (Input.GetKeyDown(KeyCode.F9))
@@ -206,6 +209,8 @@ namespace BmMod
                     Window.MenuRect = new Rect(Window.MenuRect.x, Window.MenuRect.y, Window.MenuRect.width, Window.MenuRect.height - 110);
                 }
             }
+            //快速换弹
+            if (Input.GetKeyDown(KeyCode.F11)) { QuickReloadBulletState = !QuickReloadBulletState; }
             //if (Input.GetKeyDown(KeyCode.G))
             //{
             //    GM.GMManager.instance.OpenGMPanel();
@@ -231,10 +236,10 @@ namespace BmMod
                 }
                 else
                 {
-                    var CursorObj = new WarTeamerInfoManager();
-                    CursorObj.OpenTeamerInfo();
+                    //奇怪的实现方式 但有用
+                    WarTeamerInfoManager.Instance.OpenTeamerInfo();
                     new WarTeamerInfoPanel().ShowCursor();
-                    CursorObj.CloseTeamerInfo();
+                    WarTeamerInfoManager.Instance.CloseTeamerInfo();
                 }
             }
             //地图提示
@@ -342,12 +347,15 @@ namespace BmMod
             {
                 CurWeaponObj.ReloadBulletImmediately();
                 CurWeaponObj.ModifyBulletInMagzine(100, 100);
+            }
+            //快速换弹
+            if (QuickReloadBulletState)
+            {
                 CurWeaponObj.WeaponAttr.FillTime = 1;
-
             }
             //提高精准度
             if (AccuracyState) { CurWeaponObj.WeaponAttr.Accuracy = SetList(100, 100, 100); }
-            //超远变态武器
+            //近战距离
             if (AttDistanceState)
             {
                 CurWeaponObj.WeaponAttr.AttDis = 9999f;
@@ -570,10 +578,7 @@ namespace BmMod
                     Ray ray = new Ray(HeroPos, vector);
                     var hits = Physics.RaycastAll(ray, Distance);
                     //开启了破坏护盾功能并存在护盾 执行ZoomShield
-                    if (AimBotShieldState && hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield"))
-                    {
-                        ZoomShield();
-                    }
+                    if (AimBotShieldState && hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield")) { ZoomShield(); }
                     //查询是否存在阻挡
                     bool query = hits.Any(hit => hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 30 || hit.collider.gameObject.layer == 31 || hit.collider.gameObject.tag == "Monster_Shield");
                     if (query) { continue; }
@@ -646,6 +651,7 @@ namespace BmMod
                     float Distance = vector.magnitude;
                     Ray ray = new Ray(position, vector);
                     var hits = Physics.RaycastAll(ray, Distance);
+                    if (hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield")) { ZoomShield(); }
                     bool query = hits.Any(hit => hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 30 || hit.collider.gameObject.layer == 31 || hit.collider.gameObject.tag == "Monster_Shield");
                     if (!query && Distance < SightRange)
                     {

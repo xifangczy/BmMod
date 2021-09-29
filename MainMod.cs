@@ -5,6 +5,7 @@ using HarmonyLib;
 using System.IO;
 using UnhollowerRuntimeLib;
 using UnityEngine;
+using Item;
 
 namespace BmMod
 {
@@ -78,7 +79,7 @@ namespace BmMod
     }
 
     //注入脚本
-    [HarmonyPatch(typeof(MainManager), "Awake")]
+    [HarmonyPatch(typeof(MainManager), "Start")]
     class Inject
     {
         static void Prefix()
@@ -89,17 +90,17 @@ namespace BmMod
         }
     }
     //不耗子弹
-    [HarmonyPatch(typeof(Item.WeaponPerformanceObj), "WeaponConsumeBullet")]
+    [HarmonyPatch(typeof(WeaponPerformanceObj), "WeaponConsumeBullet")]
     class WeaponConsumeBullet
     {
         static bool Prefix() { return !BmMod.NoBulletConsumeState; }
     }
-    [HarmonyPatch(typeof(Item.WeaponPerformanceObj), "ConsumeBulletFromMag")]
+    [HarmonyPatch(typeof(WeaponPerformanceObj), "ConsumeBulletFromMag")]
     class ConsumeBulletFromMag
     {
         static bool Prefix() { return !BmMod.NoBulletConsumeState; }
     }
-    [HarmonyPatch(typeof(Item.WeaponPerformanceObj), "ConsumeBulletFromPack")]
+    [HarmonyPatch(typeof(WeaponPerformanceObj), "ConsumeBulletFromPack")]
     class ConsumeBulletFromPack
     {
         static bool Prefix() { return !BmMod.NoBulletConsumeState; }
@@ -153,10 +154,9 @@ namespace BmMod
     {
         static bool Prefix() { return false; }
     }
-
     //测试
-    //[HarmonyPatch(typeof(NewPlayerObject), "xxx")]
-    //class test
+    //[HarmonyPatch(typeof(), "")]
+    //class Test
     //{
     //    static bool Prefix()
     //    {
