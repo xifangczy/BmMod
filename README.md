@@ -10,6 +10,9 @@ https://builds.bepis.io/projects/bepinex_be
 可以先打开BepInEx的控制台，具体教程在 https://docs.bepinex.dev/master/articles/user_guide/troubleshooting.html
 4. 开玩
 
+目前已知问题
+第四大关会出现自瞄失效。暂不清楚原因(要打到第四关好累的...)
+
 本项目实验性质，为了学习Unity 和 C#  
 因辅助造成的问题，概不负责。
 
