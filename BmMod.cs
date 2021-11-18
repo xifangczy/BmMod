@@ -424,10 +424,6 @@ namespace BmMod
                 foreach (NewPlayerObject newPlayerObject in monsters)
                 {
                     Transform weakTrans = newPlayerObject.BodyPartCom.GetWeakTrans();
-                    //if (weakTrans.localScale.x < ZoomWeakNum)
-                    //{
-                    //    weakTrans.localScale *= ZoomWeakNum;
-                    //}
                     weakTrans.localScale = new Vector3(ZoomWeakNum, ZoomWeakNum, ZoomWeakNum);
                 }
             }
@@ -522,7 +518,6 @@ namespace BmMod
             var Shields = GameObject.FindGameObjectsWithTag("Monster_Shield");
             foreach (var Shield in Shields)
             {
-                //Destroy(Shield);  //有BUG
                 Shield.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             }
         }

@@ -19,11 +19,11 @@ namespace BmMod
         // 主菜单
         public static void MenuWindow(int windowID)
         {
-            GUILayout.Label("[Insert] 呼出/隐藏鼠标", null);
-            AmmoState = GUILayout.Toggle(AmmoState, AmmoState ? "[F1] 无限子弹 <color=lime>[开]</color>" : "[F1] 无限子弹 [关]", null);
+            GUILayout.Label("[Insert] 呼出/隐藏鼠标");
+            AmmoState = GUILayout.Toggle(AmmoState, AmmoState ? "[F1] 无限子弹 <color=lime>[开]</color>" : "[F1] 无限子弹 [关]");
 
-            GUILayout.BeginHorizontal(null);
-            if (GUILayout.Toggle(AimBotState, "[F2] 自瞄 " + AimBotKeyStr[AimBotKeyNum], null) != AimBotState)
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Toggle(AimBotState, "[F2] 自瞄 " + AimBotKeyStr[AimBotKeyNum]) != AimBotState)
             {
                 AimBotState = !AimBotState;
                 if (AimBotState)
@@ -37,17 +37,17 @@ namespace BmMod
                     AimBotKeyNum = 0;
                 }
             }
-            if (GUILayout.Button("设置", null)) { AimBotWindowState = !AimBotWindowState; }
+            if (GUILayout.Button("设置")) { AimBotWindowState = !AimBotWindowState; }
             GUILayout.EndHorizontal();
             if (AimBotState)
             {
-                GUILayout.BeginHorizontal(null);
+                GUILayout.BeginHorizontal();
                 for (int i = 1, j = 0; i < AimBotKeyConfig.Length; i++)
                 {
                     if (AimBotKeyConfig[i])
                     {
                         j++;
-                        if(GUILayout.Toggle(AimBotKeyNum == i, AimBotKeyStr[i], null))
+                        if(GUILayout.Toggle(AimBotKeyNum == i, AimBotKeyStr[i]))
                         {
                             AimBotKeyNum = i;
                         }
@@ -55,13 +55,13 @@ namespace BmMod
                     if (j % 3 == 0)
                     {
                         GUILayout.EndHorizontal();
-                        GUILayout.BeginHorizontal(null);
+                        GUILayout.BeginHorizontal();
                     }
                 }
                 GUILayout.EndHorizontal();
             }
 
-            if (GUILayout.Toggle(SuperJumpState, "[F3] 起飞 " + SuperJumpStr[SuperJumpType], null) != SuperJumpState)
+            if (GUILayout.Toggle(SuperJumpState, "[F3] 起飞 " + SuperJumpStr[SuperJumpType]) != SuperJumpState)
             {
                 SuperJumpState = !SuperJumpState;
                 if (SuperJumpState)
@@ -75,12 +75,12 @@ namespace BmMod
                     SuperJumpType = 0;
                 }
             }
-            GUILayout.BeginHorizontal(null);
+            GUILayout.BeginHorizontal();
             if (SuperJumpState)
             {
                 for (int i = 1; i < SuperJumpStr.Length; i++)
                 {
-                    if (GUILayout.Toggle(SuperJumpType == i, SuperJumpStr[i], null))
+                    if (GUILayout.Toggle(SuperJumpType == i, SuperJumpStr[i]))
                     {
                         SuperJumpType = i;
                     }
@@ -88,12 +88,12 @@ namespace BmMod
             }
             GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal(null);
-            if (GUILayout.Toggle(SuperRunState, SuperRunState ? "[F4] 超级移速 <color=lime>[开]</color>" : "[F4] 超级移速 [关]", null) != SuperRunState)
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Toggle(SuperRunState, SuperRunState ? "[F4] 超级移速 <color=lime>[开]</color>" : "[F4] 超级移速 [关]") != SuperRunState)
             {
                 SuperRunToggle();
             }
-            if (GUILayout.Button("设置", null))
+            if (GUILayout.Button("设置"))
             {
                 SuperRunWindowState = !SuperRunWindowState;
                 if (SuperRunWindowState)
@@ -108,17 +108,17 @@ namespace BmMod
             GUILayout.EndHorizontal();
             if (SuperRunWindowState)
             {
-                GUILayout.Label("移速 " + SuperRunSet, null);
-                SuperRunSet = (int)GUILayout.HorizontalSlider(SuperRunSet, 0, 3000, null);
-                if (GUILayout.Button("保存参数", null)) { MainMod.SaveConfig(); }
+                GUILayout.Label("移速 " + SuperRunSet);
+                SuperRunSet = (int)GUILayout.HorizontalSlider(SuperRunSet, 0, 3000);
+                if (GUILayout.Button("保存参数")) { MainMod.SaveConfig(); }
             }
 
-            NoRecoilState = GUILayout.Toggle(NoRecoilState, NoRecoilState ? "[F5] 无后坐力 <color=lime>[开]</color>" : "[F5] 无后坐力 [关]", null);
-            NoBulletConsumeState = GUILayout.Toggle(NoBulletConsumeState, NoBulletConsumeState ? "[F6] 不耗子弹 <color=lime>[开]</color>" : "[F6] 不耗子弹 [关]", null);
-            AccuracyState = GUILayout.Toggle(AccuracyState, AccuracyState ? "[F7] 提高精度 <color=lime>[开]</color>" : "[F7] 提高精度 [关]", null);
-            AttDistanceState = GUILayout.Toggle(AttDistanceState, AttDistanceState ? "[F8] 近战距离 <color=lime>[开]</color>" : "[F8] 近战距离 [关]", null);
-            GUILayout.BeginHorizontal(null);
-            if(GUILayout.Toggle(WeaponSpeedState, WeaponSpeedState ? "[F9] 提高射速 <color=lime>[开]</color>" : "[F9] 提高射速 [关]", null) != WeaponSpeedState)
+            NoRecoilState = GUILayout.Toggle(NoRecoilState, NoRecoilState ? "[F5] 无后坐力 <color=lime>[开]</color>" : "[F5] 无后坐力 [关]");
+            NoBulletConsumeState = GUILayout.Toggle(NoBulletConsumeState, NoBulletConsumeState ? "[F6] 不耗子弹 <color=lime>[开]</color>" : "[F6] 不耗子弹 [关]");
+            AccuracyState = GUILayout.Toggle(AccuracyState, AccuracyState ? "[F7] 提高精度 <color=lime>[开]</color>" : "[F7] 提高精度 [关]");
+            AttDistanceState = GUILayout.Toggle(AttDistanceState, AttDistanceState ? "[F8] 近战距离 <color=lime>[开]</color>" : "[F8] 近战距离 [关]");
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Toggle(WeaponSpeedState, WeaponSpeedState ? "[F9] 提高射速 <color=lime>[开]</color>" : "[F9] 提高射速 [关]") != WeaponSpeedState)
             {
                 WeaponSpeedState = !WeaponSpeedState;
                 if (WeaponSpeedState)
@@ -133,20 +133,20 @@ namespace BmMod
             GUILayout.EndHorizontal();
             if (WeaponSpeedState)
             {
-                AttSpeedState = GUILayout.Toggle(AttSpeedState, "射速(部分武器可用):" + AttSpeedNum, null);
-                AttSpeedNum = (int)GUILayout.HorizontalSlider(AttSpeedNum, 100f, 5000f, null);
-                BulletSpeedState = GUILayout.Toggle(BulletSpeedState, "弹速:" + BulletSpeedNum, null);
-                BulletSpeedNum = GUILayout.HorizontalSlider(BulletSpeedNum, 100f, 5000f, null);
-                if (GUILayout.Button("保存参数", null)) { MainMod.SaveConfig(); }
+                AttSpeedState = GUILayout.Toggle(AttSpeedState, "射速(部分武器可用):" + AttSpeedNum);
+                AttSpeedNum = (int)GUILayout.HorizontalSlider(AttSpeedNum, 100f, 5000f);
+                BulletSpeedState = GUILayout.Toggle(BulletSpeedState, "弹速:" + BulletSpeedNum);
+                BulletSpeedNum = GUILayout.HorizontalSlider(BulletSpeedNum, 100f, 5000f);
+                if (GUILayout.Button("保存参数")) { MainMod.SaveConfig(); }
             }
-            QuickReloadBulletState = GUILayout.Toggle(QuickReloadBulletState, QuickReloadBulletState ? "[F11] 快速换弹 <color=lime>[开]</color>" : "[F11] 快速换弹 [关]", null);
+            QuickReloadBulletState = GUILayout.Toggle(QuickReloadBulletState, QuickReloadBulletState ? "[F11] 快速换弹 <color=lime>[开]</color>" : "[F11] 快速换弹 [关]");
 
-            GUILayout.Label("[中键] 我吸!", null);
-            GUILayout.Label("[C/X] 地图信息", null);
+            GUILayout.Label("[中键] 我吸!");
+            GUILayout.Label("[C/X] 地图信息");
             GUILayout.Space(5);
-            GUILayout.BeginHorizontal(null);
-            if (GUILayout.Button("关闭窗口", null)) { MenuState = false; }
-            if (GUILayout.Button("实验室", null)) { TestWindowState = !TestWindowState; }
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("关闭窗口")) { MenuState = false; }
+            if (GUILayout.Button("实验室")) { TestWindowState = !TestWindowState; }
             GUILayout.EndHorizontal();
             GUI.DragWindow(new Rect(0, 0, 10000, 420));
         }
@@ -157,29 +157,29 @@ namespace BmMod
             Il2CppReferenceArray<GUILayoutOption> options = null;
             TipsScroll = GUILayout.BeginScrollView(TipsScroll, options);
 
-            if (GUILayout.Button("储存当前位置", null)) { SaveHeroPosition = HeroCameraManager.HeroTran.position; }
+            if (GUILayout.Button("储存当前位置")) { SaveHeroPosition = HeroCameraManager.HeroTran.position; }
 
-            GUILayout.BeginHorizontal(null);
-            GUILayout.Label("返回之前或储存的位置", null);
-            if (GUILayout.Button("Go", null)) { HeroCameraManager.HeroTran.position = SaveHeroPosition; }
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("返回之前或储存的位置");
+            if (GUILayout.Button("Go")) { HeroCameraManager.HeroTran.position = SaveHeroPosition; }
             GUILayout.EndHorizontal();
 
             //玩家
             foreach (var keyValuePair in NewPlayerManager.PlayerTeamerDict)
             {
                 if (keyValuePair.Value.ObjectID == HeroCameraManager.HeroID) { continue; }
-                GUILayout.BeginHorizontal(null);
-                GUILayout.Label("<color=lime>" + keyValuePair.Value.playerProp.Name + "</color>", null);
-                if (GUILayout.Button("Go", null)) { SaveHeroPosition = HeroCameraManager.HeroTran.position; HeroCameraManager.HeroTran.position = keyValuePair.Value.centerPointTrans.position; }
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("<color=lime>" + keyValuePair.Value.playerProp.Name + "</color>");
+                if (GUILayout.Button("Go")) { SaveHeroPosition = HeroCameraManager.HeroTran.position; HeroCameraManager.HeroTran.position = keyValuePair.Value.centerPointTrans.position; }
                 GUILayout.EndHorizontal();
             }
 
             // 下一关门口
             if (NewPlayerManager.NextDoor != null)
             {
-                GUILayout.BeginHorizontal(null);
-                GUILayout.Label("下一关入口", null);
-                if (GUILayout.Button("Go", null)) { SaveHeroPosition = HeroCameraManager.HeroTran.position; HeroCameraManager.HeroTran.position = NewPlayerManager.NextDoor.centerPointTrans.position; }
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("下一关入口");
+                if (GUILayout.Button("Go")) { SaveHeroPosition = HeroCameraManager.HeroTran.position; HeroCameraManager.HeroTran.position = NewPlayerManager.NextDoor.centerPointTrans.position; }
                 GUILayout.EndHorizontal();
             }
 
@@ -189,9 +189,9 @@ namespace BmMod
                 var obj = keyValuePair.Value;
                 if (ShowObject(obj))
                 {
-                    GUILayout.BeginHorizontal(null);
-                    GUILayout.Label(ShowObjectName(obj), null);
-                    if (GUILayout.Button("Go", null)) { SaveHeroPosition = HeroCameraManager.HeroTran.position; HeroCameraManager.HeroTran.position = obj.centerPointTrans.position; }
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(ShowObjectName(obj));
+                    if (GUILayout.Button("Go")) { SaveHeroPosition = HeroCameraManager.HeroTran.position; HeroCameraManager.HeroTran.position = obj.centerPointTrans.position; }
                     GUILayout.EndHorizontal();
                 }
             }
@@ -203,11 +203,11 @@ namespace BmMod
         public static void AimBotWindow(int windowID)
         {
             GUILayout.Space(5);
-            GUILayout.Label("自瞄按键筛选", null);
-            GUILayout.BeginHorizontal(null);
+            GUILayout.Label("自瞄按键筛选");
+            GUILayout.BeginHorizontal();
             for (int i = 1; i < AimBotKeyStr.Length; i++)
             {
-                AimBotKeyConfig[i] = GUILayout.Toggle(AimBotKeyConfig[i], AimBotKeyStr[i], null);
+                AimBotKeyConfig[i] = GUILayout.Toggle(AimBotKeyConfig[i], AimBotKeyStr[i]);
                 //至少保留一个按钮
                 if(AimBotKeyConfig.Where(x => x == true).Count() == 1)
                 {
@@ -216,39 +216,39 @@ namespace BmMod
                 if (i % 3 == 0)
                 {
                     GUILayout.EndHorizontal();
-                    GUILayout.BeginHorizontal(null);
+                    GUILayout.BeginHorizontal();
                 }
             }
             GUILayout.EndHorizontal();
 
             GUILayout.Space(5);
-            if (GUILayout.Toggle(AimBotMagneticState, "磁吸自瞄(微自瞄)", null))
+            if (GUILayout.Toggle(AimBotMagneticState, "磁吸自瞄(微自瞄)"))
             {
                 AimBotMagneticState = true;
                 AimBotForceState = false;
             }
-            if (GUILayout.Toggle(AimBotForceState, "暴力自瞄", null))
+            if (GUILayout.Toggle(AimBotForceState, "暴力自瞄"))
             {
                 AimBotForceState = true;
                 AimBotMagneticState = false;
             }
             GUILayout.Space(5);
-            GUILayout.Label("自瞄范围 " + AimBotSightRange, null);
-            AimBotSightRange = GUILayout.HorizontalSlider(AimBotSightRange, 0.0f, 0.5f, null);
+            GUILayout.Label("自瞄范围 " + AimBotSightRange);
+            AimBotSightRange = GUILayout.HorizontalSlider(AimBotSightRange, 0.0f, 0.5f);
 
             GUILayout.Space(5);
-            GUILayout.Label("强制优先距离最近的敌人\n优先距离范围: " + AimBotForceDistance, null);
-            AimBotForceDistance = (float)Math.Round(GUILayout.HorizontalSlider(AimBotForceDistance, 0.0f, 100f, null), 1);
+            GUILayout.Label("强制优先距离最近的敌人\n优先距离范围: " + AimBotForceDistance);
+            AimBotForceDistance = (float)Math.Round(GUILayout.HorizontalSlider(AimBotForceDistance, 0.0f, 100f), 1);
 
             GUILayout.Space(5);
-            AimBotShieldState = GUILayout.Toggle(AimBotShieldState, "干掉盾牌（恶心的马头锐士)", null);
+            AimBotShieldState = GUILayout.Toggle(AimBotShieldState, "干掉盾牌（恶心的马头锐士)");
             GUILayout.Space(5);
-            AimBotPlusState = GUILayout.Toggle(AimBotPlusState, "管他喵的，转起来", null);
+            AimBotPlusState = GUILayout.Toggle(AimBotPlusState, "管他喵的，转起来");
 
             GUILayout.Space(5);
-            GUILayout.BeginHorizontal(null);
-            if (GUILayout.Button("关闭窗口", null)) { AimBotWindowState = false; }
-            if (GUILayout.Button("保存参数", null)) { MainMod.SaveConfig(); }
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("关闭窗口")) { AimBotWindowState = false; }
+            if (GUILayout.Button("保存参数")) { MainMod.SaveConfig(); }
             GUILayout.EndHorizontal();
             GUI.DragWindow(new Rect(0, 0, 10000, 250));
         }
@@ -257,26 +257,26 @@ namespace BmMod
         public static void TestWindow(int windowID)
         {
             GUILayout.Space(10);
-            if (GUILayout.Button("查看物品ID", null)) { ShowAllIdState = !ShowAllIdState; }
+            if (GUILayout.Button("查看物品ID")) { ShowAllIdState = !ShowAllIdState; }
 
-            GUILayout.BeginHorizontal(null);
-            GUILayout.Label("敌人模型大小", null);
-            if (GUILayout.Button("+", null)) { MonstersModelState = 1; }
-            if (GUILayout.Button("-", null)) { MonstersModelState = 2; }
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("敌人模型大小");
+            if (GUILayout.Button("+")) { MonstersModelState = 1; }
+            if (GUILayout.Button("-")) { MonstersModelState = 2; }
             GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal(null);
-            GUILayout.Label("自己模型大小", null);
-            if (GUILayout.Button("+", null)) { MyModelState = 1; }
-            if (GUILayout.Button("-", null)) { MyModelState = 2; }
-            if (GUILayout.Button("还原", null)) { MyModelState = 3; }
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("自己模型大小");
+            if (GUILayout.Button("+")) { MyModelState = 1; }
+            if (GUILayout.Button("-")) { MyModelState = 2; }
+            if (GUILayout.Button("还原")) { MyModelState = 3; }
             GUILayout.EndHorizontal();
 
             GUILayout.Space(5);
-            if (GUILayout.Button(ShowBloodBarState ? "始终显示怪物血条[开]" : "始终显示怪物血条[关]", null)) { ShowBloodBarState = !ShowBloodBarState; }
+            if (GUILayout.Button(ShowBloodBarState ? "始终显示怪物血条[开]" : "始终显示怪物血条[关]")) { ShowBloodBarState = !ShowBloodBarState; }
 
             GUILayout.Space(5);
-            if (GUILayout.Button(ZoomWeakState ? "下雨不愁[开]" : "大头大头[关]", null))
+            if (GUILayout.Button(ZoomWeakState ? "下雨不愁[开]" : "大头大头[关]"))
             {
                 ZoomWeakState = !ZoomWeakState;
                 if (ZoomWeakState)
@@ -290,13 +290,13 @@ namespace BmMod
             }
             if (ZoomWeakState)
             {
-                GUILayout.Label("你想多大? " + ZoomWeakNum, null);
-                ZoomWeakNum = GUILayout.HorizontalSlider(ZoomWeakNum, 0.0f, 10f, null);
+                GUILayout.Label("你想多大? " + ZoomWeakNum);
+                ZoomWeakNum = GUILayout.HorizontalSlider(ZoomWeakNum, 0.0f, 10f);
             }
 
             GUILayout.Space(5);
-            if (GUILayout.Button("退出游戏", null)) { System.Diagnostics.Process.GetCurrentProcess().Kill(); }
-            if (GUILayout.Button("关闭窗口", null)) { TestWindowState = false; }
+            if (GUILayout.Button("退出游戏")) { System.Diagnostics.Process.GetCurrentProcess().Kill(); }
+            if (GUILayout.Button("关闭窗口")) { TestWindowState = false; }
 
             GUI.DragWindow(new Rect(0, 0, 10000, 200));
         }
