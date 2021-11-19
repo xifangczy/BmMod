@@ -456,8 +456,8 @@ namespace BmMod
                    || obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_LOCKEDBOX
                    || obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_INITBOX
                    || obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_SMITH
-                   || (obj.FightType == ServerDefine.FightType.WARRIOR_OBSTACLE_NORMAL && (obj.Shape == 4406 || obj.Shape == 4419 || obj.Shape == 4427))
-                   || (obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_TRANSFER && (obj.Shape == 4016 || obj.Shape == 4009 || obj.Shape == 4019))
+                   || (obj.FightType == ServerDefine.FightType.WARRIOR_OBSTACLE_NORMAL && (obj.Shape == 4406 || obj.Shape == 4419 || obj.Shape == 4427 || obj.Shape == 4430))
+                   || (obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_TRANSFER && (obj.Shape == 4016 || obj.Shape == 4009 || obj.Shape == 4019 || obj.Shape == 4029))
                    || obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_GSCASHSHOP;
         }
         //Object ID 转名字
