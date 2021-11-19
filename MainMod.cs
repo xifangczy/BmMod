@@ -111,4 +111,13 @@ namespace BmMod
     {
         static bool Prefix() { return !BmMod.NoRecoilState; }
     }
+    //测试
+    //[HarmonyPatch(typeof(), "")]
+    //class test
+    //{
+    //    static bool Prefix()
+    //    {
+    //        return true;
+    //    }
+    //}
 }
