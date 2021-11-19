@@ -1,6 +1,9 @@
 # GunfireRebornBmMod
  枪火重生 辅助Mod
 
+ ![截图.PNG](https://i.loli.net/2021/11/20/YwfdN3yBo4EktVu.png)
+
+
 需要MOD框架 BepInEx 6
 https://builds.bepis.io/projects/bepinex_be  
 
@@ -10,7 +13,7 @@ https://builds.bepis.io/projects/bepinex_be
 可以先打开BepInEx的控制台，具体教程在 https://docs.bepinex.dev/master/articles/user_guide/troubleshooting.html
 4. 开玩
 
-目前 BepInEx 6 正处于开发阶段，#520号版本正常使用本MOD。如果最新版出现MOD无法使用情况，请降低BepInEx 6版本。
+目前 BepInEx 6 正处于开发阶段，#521号版本正常使用本MOD。如果最新版出现MOD无法使用情况，请降低BepInEx 6版本。
 
 目前已知问题
 大部分武器修改高射速，无效。
