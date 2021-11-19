@@ -1,7 +1,7 @@
 # GunfireRebornBmMod
  枪火重生 辅助Mod
 
-需要MOD框架 BepInEx 6  
+需要MOD框架 BepInEx 6
 https://builds.bepis.io/projects/bepinex_be  
 
 1. 下载 BepInEx Unity IL2CPP for Windows x64 machines 并解压到游戏目录
@@ -10,10 +10,12 @@ https://builds.bepis.io/projects/bepinex_be
 可以先打开BepInEx的控制台，具体教程在 https://docs.bepinex.dev/master/articles/user_guide/troubleshooting.html
 4. 开玩
 
+目前 BepInEx 6 正处于开发阶段，#520号版本正常使用本MOD。如果最新版出现MOD无法使用情况，请降低BepInEx 6版本。
+
 目前已知问题
 大部分武器修改高射速，无效。
 手套武器，无法“转起来”。
-自瞄会锁第四关不休怪
+自瞄会锁暴躁怪。
 
 只在steam平台测试过，wegame平台是否能使用，自行测试。
 

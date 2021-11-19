@@ -140,7 +140,6 @@ namespace BmMod
                 }
             }
         }
-        public static SkillBolt.SkillCollectData final;
         void Update()
         {
             //菜单 开关
@@ -221,10 +220,10 @@ namespace BmMod
             //当前武器ID和对象
             int CurWeaponID = HeroCameraManager.HeroObj.PlayerCom.CurWeaponID;
             WeaponPerformanceObj CurWeaponObj = HeroCameraManager.HeroObj.BulletPreFormCom.ReturnWeapon(CurWeaponID);
-            if (Input.GetKeyDown(KeyCode.Keypad0))
-            {
-                //MainMod.Log.LogWarning();
-            }
+            //if (Input.GetKeyDown(KeyCode.Keypad0))
+            //{
+            //    //MainMod.Log.LogWarning();
+            //}
 
             //隐藏显示鼠标
             if (Input.GetKeyDown(KeyCode.Insert) || (CursorState && Input.GetKeyDown(KeyCode.Mouse1)))
