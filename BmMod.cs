@@ -421,9 +421,17 @@ namespace BmMod
             if (ZoomWeakState)
             {
                 List<NewPlayerObject> monsters = NewPlayerManager.GetMonsters();
-                foreach (NewPlayerObject newPlayerObject in monsters)
+                Transform weakTrans;
+                foreach (var monster in monsters)
                 {
-                    Transform weakTrans = newPlayerObject.BodyPartCom.GetWeakTrans();
+                    try
+                    {
+                        weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
                     weakTrans.localScale = new Vector3(ZoomWeakNum, ZoomWeakNum, ZoomWeakNum);
                 }
             }
@@ -463,11 +471,11 @@ namespace BmMod
             {
                 return "行脚商";
             }
-            else if (obj.FightType == ServerDefine.FightType.WARRIOR_OBSTACLE_NORMAL && (obj.Shape == 4406 || obj.Shape == 4419 || obj.Shape == 4427))
+            else if (obj.FightType == ServerDefine.FightType.WARRIOR_OBSTACLE_NORMAL && (obj.Shape == 4406 || obj.Shape == 4419 || obj.Shape == 4427 || obj.Shape == 4430))
             {
                 return "<color=red>未开秘境</color>";
             }
-            else if (obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_TRANSFER && (obj.Shape == 4016 || obj.Shape == 4009 || obj.Shape == 4019))
+            else if (obj.FightType == ServerDefine.FightType.NWARRIOR_NPC_TRANSFER && (obj.Shape == 4016 || obj.Shape == 4009 || obj.Shape == 4019 || obj.Shape == 4029))
             {
                 return "<color=red>已开秘境</color>";
             }
@@ -548,10 +556,19 @@ namespace BmMod
             float DistanceRange = 99999;    //筛选距离最近
             bool DistanceFlag = false;  //是否存在距离最近的敌人
             Transform ResTran = null;   //储存Transform结果
-            foreach (NewPlayerObject monster in monsters)
+            foreach (var monster in monsters)
             {
                 if (monster.playerProp.HP == 1 && monster.BloodBarCom.BloodBar.HolaName == "不朽的") { continue; }    // 无敌怪
-                Transform weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                Transform weakTrans;
+                try
+                {
+                    weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                }
+                catch
+                {
+                    continue;
+                }
+                
                 if (weakTrans != null)
                 {
                     Vector3 vector = CameraManager.MainCameraCom.WorldToViewportPoint(weakTrans.position);  // 转二维坐标
@@ -636,10 +653,18 @@ namespace BmMod
             Vector3 position = CameraManager.MainCamera.position;
             Transform transform = null;
             float SightRange = 9999999;
-            foreach (NewPlayerObject newPlayerObject in monsters)
+            foreach (var monster in monsters)
             {
-                if (newPlayerObject.playerProp.HP == 1 && newPlayerObject.BloodBarCom.BloodBar.HolaName == "不朽的") { continue; }    // 无敌怪
-                Transform weakTrans = newPlayerObject.BodyPartCom.GetWeakTrans(false);
+                if (monster.playerProp.HP == 1 && monster.BloodBarCom.BloodBar.HolaName == "不朽的") { continue; }    // 无敌怪
+                Transform weakTrans;
+                try
+                {
+                    weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                }
+                catch
+                {
+                    continue;
+                }
                 if (weakTrans != null)
                 {
                     Vector3 vector = weakTrans.position - position;
