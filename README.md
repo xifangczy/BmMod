@@ -2,6 +2,7 @@
  枪火重生 辅助Mod
 
  ![截图.PNG](https://i.loli.net/2021/11/20/YwfdN3yBo4EktVu.png)
+ ![捕获2.PNG](https://i.loli.net/2021/11/20/r5nDVROgq4EGxyW.png)
 
 
 需要MOD框架 BepInEx 6
