@@ -19,7 +19,6 @@ https://builds.bepis.io/projects/bepinex_be
 目前已知问题
 大部分武器修改高射速，无效。
 手套武器，无法“转起来”。
-自瞄会锁暴躁怪。
 
 只在steam平台测试过，wegame平台是否能使用，自行测试。
 

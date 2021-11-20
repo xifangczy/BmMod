@@ -557,57 +557,60 @@ namespace BmMod
             Transform ResTran = null;   //储存Transform结果
             foreach (var monster in monsters)
             {
-                if (monster.playerProp.HP == 1 && monster.BloodBarCom.BloodBar.HolaName == "不朽的") { continue; }    // 无敌怪
-                Transform weakTrans;
+                //MainMod.Log.LogWarning("isSpecialUndieChallenge " + monster.BloodBarCom.BloodBar.isSpecialUndieChallenge);
+                //MainMod.Log.LogWarning("isUndieChallenge " + monster.BloodBarCom.BloodBar.isUndieChallenge);
+                //MainMod.Log.LogWarning("isUndieStart " + monster.BloodBarCom.BloodBar.isUndieStart);
+                //MainMod.Log.LogWarning("isUndieStart " + monster.BloodBarCom.BloodBar.m_UndieMonsterBar);
+                //MainMod.Log.LogWarning("isUndieStart " + monster.BloodBarCom.BloodBar.m_UndieChallengeBar);
+                if (monster.playerProp.HP == 1 && (monster.BloodBarCom.BloodBar.isSpecialUndieChallenge || monster.BloodBarCom.BloodBar.isUndieChallenge || monster.BloodBarCom.BloodBar.isUndieStart)) { continue; }    // 无敌怪
                 try
                 {
-                    weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                    Transform weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                    if (weakTrans != null)
+                    {
+                        Vector3 vector = CameraManager.MainCameraCom.WorldToViewportPoint(weakTrans.position);  // 转二维坐标
+                        if (vector.z <= 0) { continue; } // 忽略身后目标
+                        float CenterDistance = Vector3.Distance(new Vector3(0.5f, 0.5f, 0), new Vector3(vector.x, vector.y, 0));  // 计算目标与准星距离
+
+                        vector = weakTrans.position - HeroPos;
+                        float Distance = vector.magnitude;
+                        if (Distance <= AimBotForceDistance)
+                        {
+                            DistanceFlag = true;
+                        }
+                        else if (CenterDistance > AimBotSightRange)
+                        {
+                            continue;
+                        }
+
+                        //发射射线查看是否有阻挡
+                        Ray ray = new Ray(HeroPos, vector);
+                        var hits = Physics.RaycastAll(ray, Distance);
+                        //开启了破坏护盾功能并存在护盾 执行ZoomShield
+                        if (AimBotShieldState && hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield")) { ZoomShield(); }
+                        //查询是否存在阻挡
+                        bool query = hits.Any(hit => hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 30 || hit.collider.gameObject.layer == 31 || hit.collider.gameObject.tag == "Monster_Shield");
+                        if (query) { continue; }
+
+                        //找到最近的敌人
+                        if (DistanceFlag)
+                        {
+                            if (Distance < DistanceRange)
+                            {
+                                DistanceRange = Distance;
+                                ResTran = weakTrans;
+                            }
+                        }
+                        else if (CenterDistance < CenterRange)
+                        {
+                            CenterRange = CenterDistance;
+                            ResTran = weakTrans;
+                        }
+                    }
                 }
                 catch
                 {
                     continue;
-                }
-                
-                if (weakTrans != null)
-                {
-                    Vector3 vector = CameraManager.MainCameraCom.WorldToViewportPoint(weakTrans.position);  // 转二维坐标
-                    if (vector.z <= 0) { continue; } // 忽略身后目标
-                    float CenterDistance = Vector3.Distance(new Vector3(0.5f, 0.5f, 0), new Vector3(vector.x, vector.y, 0));  // 计算目标与准星距离
-
-                    vector = weakTrans.position - HeroPos;
-                    float Distance = vector.magnitude;
-                    if (Distance <= AimBotForceDistance)
-                    {
-                        DistanceFlag = true;
-                    }
-                    else if (CenterDistance > AimBotSightRange)
-                    {
-                        continue;
-                    }
-
-                    //发射射线查看是否有阻挡
-                    Ray ray = new Ray(HeroPos, vector);
-                    var hits = Physics.RaycastAll(ray, Distance);
-                    //开启了破坏护盾功能并存在护盾 执行ZoomShield
-                    if (AimBotShieldState && hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield")) { ZoomShield(); }
-                    //查询是否存在阻挡
-                    bool query = hits.Any(hit => hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 30 || hit.collider.gameObject.layer == 31 || hit.collider.gameObject.tag == "Monster_Shield");
-                    if (query) { continue; }
-
-                    //找到最近的敌人
-                    if (DistanceFlag)
-                    {
-                        if (Distance < DistanceRange)
-                        {
-                            DistanceRange = Distance;
-                            ResTran = weakTrans;
-                        }
-                    }
-                    else if (CenterDistance < CenterRange)
-                    {
-                        CenterRange = CenterDistance;
-                        ResTran = weakTrans;
-                    }
                 }
             }
             if (ResTran != null)
@@ -654,29 +657,28 @@ namespace BmMod
             float SightRange = 9999999;
             foreach (var monster in monsters)
             {
-                if (monster.playerProp.HP == 1 && monster.BloodBarCom.BloodBar.HolaName == "不朽的") { continue; }    // 无敌怪
-                Transform weakTrans;
+                if (monster.playerProp.HP == 1 && (monster.BloodBarCom.BloodBar.isSpecialUndieChallenge || monster.BloodBarCom.BloodBar.isUndieChallenge || monster.BloodBarCom.BloodBar.isUndieStart)) { continue; }    // 无敌怪
                 try
                 {
-                    weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                    Transform weakTrans = monster.BodyPartCom.GetWeakTrans(false);
+                    if (weakTrans != null)
+                    {
+                        Vector3 vector = weakTrans.position - position;
+                        float Distance = vector.magnitude;
+                        Ray ray = new Ray(position, vector);
+                        var hits = Physics.RaycastAll(ray, Distance);
+                        if (hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield")) { ZoomShield(); }
+                        bool query = hits.Any(hit => hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 30 || hit.collider.gameObject.layer == 31 || hit.collider.gameObject.tag == "Monster_Shield");
+                        if (!query && Distance < SightRange)
+                        {
+                            SightRange = Distance;
+                            transform = weakTrans;
+                        }
+                    }
                 }
                 catch
                 {
                     continue;
-                }
-                if (weakTrans != null)
-                {
-                    Vector3 vector = weakTrans.position - position;
-                    float Distance = vector.magnitude;
-                    Ray ray = new Ray(position, vector);
-                    var hits = Physics.RaycastAll(ray, Distance);
-                    if (hits.Any(hit => hit.collider.gameObject.tag == "Monster_Shield")) { ZoomShield(); }
-                    bool query = hits.Any(hit => hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 30 || hit.collider.gameObject.layer == 31 || hit.collider.gameObject.tag == "Monster_Shield");
-                    if (!query && Distance < SightRange)
-                    {
-                        SightRange = Distance;
-                        transform = weakTrans;
-                    }
                 }
             }
             if (transform != null)
